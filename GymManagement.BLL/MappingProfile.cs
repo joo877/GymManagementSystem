@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using GymManagement.BLL.ViewModels.BookingViewModel;
+using GymManagement.BLL.ViewModels.MemberShipViewModels;
 using GymManagement.BLL.ViewModels.MemberViewModels;
 using GymManagement.BLL.ViewModels.PlanViewModels;
 using GymManagement.BLL.ViewModels.SessionsViewModels;
@@ -21,7 +23,8 @@ namespace GymManagement.BLL
             mappingSession();
             MappedPlan();
             MappedTrainer();
-
+            MappingMemberShip();
+            MappingBooking();
         }
 
         private void mappigMember()
@@ -72,6 +75,7 @@ namespace GymManagement.BLL
                    .ForMember(des => des.CategoryName, opt => opt.MapFrom(src => src.Category.CategoryName));
 
             CreateMap<Session , UpdateSessionViewModel>().ReverseMap();
+          
         
         
         }
@@ -119,6 +123,36 @@ namespace GymManagement.BLL
 
                 }));
 
+        }
+
+        public void MappingMemberShip()
+        {
+            CreateMap<MemberShip, MemberShipViewModel>()
+              
+                .ForMember(des => des.StartDate, opt => DateTime.Now.ToShortDateString())
+                .ForMember(des => des.MemberName, opt => opt.MapFrom(src => src.Member.Name))
+                .ForMember(des => des.PlanName, opt => opt.MapFrom(src => src.Plan.Name));
+
+            CreateMap<Plan, PlanSelectListViewModel>();
+            CreateMap<Member, MemberSelectListViewModel>();
+
+            CreateMap<CreateMemberShipViewModel, MemberShip>()
+                
+                  .ForMember(des => des.CreatedAt, opt => DateTime.Now.ToShortTimeString());
+                
+                  
+        }
+
+        public void MappingBooking()
+        {
+            CreateMap<Booking, MemberForSessionViewModel>()
+                   .ForMember(des => des.MemberName, opt => opt.MapFrom(src => src.Member.Name))
+                   .ForMember(des => des.BookingDate, opt => opt.MapFrom(src => src.CreatedAt));
+                 
+                   
+
+            CreateMap<CreateMemberBookingViewModel, Booking>();
+           
         }
 
     }

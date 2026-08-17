@@ -77,7 +77,7 @@ namespace GymManagement.BLL.Class
 
             var MemberDetails = _mapper.Map<MemberViewModel>(member);
 
-            var activeMemberShip = await _unitOfWork.GetRepository<MemberShip>().FristOrDefualtAsync(m => m.MemberShipsId == id && m.EndDate > DateTime.Now);
+            var activeMemberShip = await _unitOfWork.GetRepository<MemberShip>().FristOrDefualtAsync(m => m.MemberId == id && m.EndDate > DateTime.Now);
 
             if (activeMemberShip is not null)
             {

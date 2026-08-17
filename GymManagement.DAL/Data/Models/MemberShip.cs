@@ -14,7 +14,7 @@ namespace GymManagement.DAL.Data.Models
 
 
         public Member Member { get; set; } = default!;
-        public int MemberShipsId { get; set; }
+        public int MemberId { get; set; }
 
 
         public Plan Plan { get; set; } = default!;

@@ -49,7 +49,7 @@ namespace GymManagement.BLL.Class
 
         public async Task<Result<IEnumerable<SessionViewModel>>> GetAllSessionAsync(CancellationToken ct)
         {
-            var sessions = await _unitOfWork.SessionRepository.GetAllSessionWithTrainerAndCategory(ct);
+            var sessions = await _unitOfWork.SessionRepository.GetAllSessionWithTrainerAndCategory(ct:ct);
             if (sessions == null || !sessions.Any()) return Result<IEnumerable<SessionViewModel>>.NotFound("Sessions Not Found");
             var mappedSession = _mapper.Map<IEnumerable<SessionViewModel>>(sessions);
             foreach (var session in mappedSession)
@@ -137,9 +137,9 @@ namespace GymManagement.BLL.Class
             var isVaild = Enum.TryParse<Specialties>(category.CategoryName, true, out var categorySpecialty);
             if (!isVaild || trainer.Specialties != categorySpecialty) return Result.Validation("Cannot Create This Session To This Trainer");
 
-             _mapper.Map<Session>(model);
+            _mapper.Map(model, session);
             session.UpdatedAt = DateTime.Now;
-            _unitOfWork.SessionRepository.Update(session);
+            _unitOfWork.SessionRepository.Update(session);  
             var result = await _unitOfWork.SaveChangAsync(ct);
             return result > 0 ? Result.OK() : Result.Failed("Session Faild To Update");
 

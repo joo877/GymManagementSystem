@@ -10,7 +10,7 @@ namespace GymManagement.DAL.Repositories.Interfaces
 {
     public interface IGenaricRepository<TEntity> where TEntity : BaseEntity ,new()
     {
-        Task<IEnumerable<TEntity>> GetAllAsync(bool IsTraking=false,CancellationToken ct =default);
+        Task<IEnumerable<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>>? predicate = null, bool IsTraking=false,CancellationToken ct =default);
 
         Task<TEntity?> GetByIdAsync(int id , CancellationToken ct = default);
 

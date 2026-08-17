@@ -20,10 +20,12 @@ namespace GymManagement.DAL.Repositories.Classes
             _dbContext = dbContext;
         }
 
-        public async Task<IEnumerable<TEntity>> GetAllAsync(bool IsTraking = false, CancellationToken ct = default)
+        public async Task<IEnumerable<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>>? predicate = null, bool IsTraking = false, CancellationToken ct = default)
         {
-            var entity =  IsTraking ? await _dbContext.Set<TEntity>().ToListAsync(ct) : await _dbContext.Set<TEntity>().AsNoTracking().ToListAsync(ct);
-            return entity;
+            var query = IsTraking ? _dbContext.Set<TEntity>() : _dbContext.Set<TEntity>().AsNoTracking();
+            if (predicate is not null)
+                query.Where(predicate);
+            return await query.ToListAsync(ct);
         }
 
 
